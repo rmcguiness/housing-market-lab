@@ -4,3 +4,8 @@ dist/
 .DS_Store
 # scratch / throwaway analysis scripts
 _*.ts
+# generated sweep data (regenerate with `npm run sweep`)
+data/
+
+# TypeScript build info
+*.tsbuildinfo

@@ -62,6 +62,17 @@ export interface DynamicsParams {
   emigrationSensitivity: number;
 }
 
+/** Per–income-quintile outcome for a single year. */
+export interface YearBand {
+  /** 0 = poorest quintile … 4 = richest. */
+  band: number;
+  households: number;
+  housed: number;
+  housedRate: number;
+  pricedOutRate: number;
+  avgIncome: number;
+}
+
 export interface YearMetrics {
   year: number;
   population: number;
@@ -70,6 +81,9 @@ export interface YearMetrics {
   pricedOutRate: number;
   medianRent: number;
   medianIncome: number;
+
+  /** Income-quintile breakdown — lets us see who each policy helps or hurts. */
+  bands: YearBand[];
 
   // Housing-stock composition — "what happens to the houses".
   privateRented: number;
@@ -235,6 +249,9 @@ function stepYear(s: WorldState, p: DynamicsParams, rng: Rng): YearMetrics {
   // ---- metrics for this year (computed before mutating state) ----
   const housed = publicOccupied + privateRented;
   const population = s.households.length;
+  // Households housed this year = public tenants + private-market matches.
+  const housedIds = new Set<number>(publiclyHoused);
+  for (const m of result.matches) if (m.unitId !== null) housedIds.add(m.householdId);
   const rents = result.unitOutcomes
     .filter((o) => o.occupied)
     .map((o) => (p.rentFreeze ? Math.min(o.rent, s.freezeCap) : o.rent))
@@ -248,6 +265,7 @@ function stepYear(s: WorldState, p: DynamicsParams, rng: Rng): YearMetrics {
     pricedOutRate: 1 - housed / population,
     medianRent: median(rents),
     medianIncome: median(incomes),
+    bands: yearBands(s.households, housedIds),
     privateRented,
     privateVacant: s.privateUnits.length - privateRented,
     publicUnits: s.publicUnits,
@@ -321,7 +339,7 @@ function stepYear(s: WorldState, p: DynamicsParams, rng: Rng): YearMetrics {
   decayAbandoned(s, p);
 
   // 8. Income growth (baseline + trickle-down + jobs) and emigration.
-  growIncomes(s, p, metrics, completed);
+  growIncomes(s, p, completed);
   applyJobsGrowth(s, p, completed, rng);
   applyEmigration(s, p, taxRate, rng);
 
@@ -409,12 +427,36 @@ function decayAbandoned(s: WorldState, p: DynamicsParams) {
   }
 }
 
-function growIncomes(s: WorldState, p: DynamicsParams, m: YearMetrics, built: number) {
-  // Trickle-down: prosperity at the top lifts everyone, at an adjustable strength.
-  const trickle = p.trickleStrength * Math.max(0, m.topIncomeShare - 0.4);
+function growIncomes(s: WorldState, p: DynamicsParams, built: number) {
+  // Baseline growth + construction-jobs growth apply uniformly to everyone.
   const jobs = p.jobsMultiplier * (built / Math.max(1, s.privateUnits.length));
-  const growth = p.baseIncomeGrowth + trickle + jobs;
+  const uniform = p.baseIncomeGrowth + jobs;
+
+  // Trickle-down: extra growth whose INCIDENCE is top-weighted — the gains accrue
+  // disproportionately to high earners and only partly reach the bottom (the
+  // empirical critique of trickle-down). The weight runs ~0.3× at the bottom to
+  // ~1.7× at the top and averages ≈1, so `trickleStrength` scales aggregate
+  // growth while widening the gap between income groups. It is a FIXED rate (not
+  // tied to the current income share) to avoid an unstable inequality→more-
+  // trickle→more-inequality feedback. Strength 0 switches the channel off.
+  const trickleBase = p.trickleStrength * 0.03;
+
+  const sortedIncomes = s.households.map((h) => h.income).sort((a, b) => a - b);
+  const n = sortedIncomes.length;
+  const percentile = (income: number): number => {
+    let lo = 0;
+    let hi = n;
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1;
+      if (sortedIncomes[mid]! <= income) lo = mid + 1;
+      else hi = mid;
+    }
+    return n ? lo / n : 0;
+  };
+
   for (const h of s.households) {
+    const incidence = 0.3 + 1.4 * percentile(h.income);
+    const growth = uniform + trickleBase * incidence;
     h.income *= 1 + growth;
     h.maxRent = (h.income / 12) * h.budgetShare;
   }
@@ -500,6 +542,33 @@ function median(sorted: number[]): number {
   if (sorted.length === 0) return 0;
   const mid = Math.floor(sorted.length / 2);
   return sorted.length % 2 ? sorted[mid]! : (sorted[mid - 1]! + sorted[mid]!) / 2;
+}
+
+/** Split households into income quintiles and measure who's housed in each. */
+function yearBands(households: Household[], housedIds: Set<number>): YearBand[] {
+  const incomes = households.map((h) => h.income).sort((a, b) => a - b);
+  const cut = (q: number) => incomes[Math.min(incomes.length - 1, Math.floor(q * incomes.length))] ?? 0;
+  const cuts = [cut(0.2), cut(0.4), cut(0.6), cut(0.8)];
+  const bandOf = (income: number) => {
+    let b = 0;
+    while (b < cuts.length && income > cuts[b]!) b++;
+    return b;
+  };
+  const acc = Array.from({ length: 5 }, (_, band) => ({ band, households: 0, housed: 0, incomeSum: 0 }));
+  for (const h of households) {
+    const a = acc[bandOf(h.income)]!;
+    a.households++;
+    a.incomeSum += h.income;
+    if (housedIds.has(h.id)) a.housed++;
+  }
+  return acc.map((a) => ({
+    band: a.band,
+    households: a.households,
+    housed: a.housed,
+    housedRate: a.households ? a.housed / a.households : 0,
+    pricedOutRate: a.households ? 1 - a.housed / a.households : 0,
+    avgIncome: a.households ? a.incomeSum / a.households : 0,
+  }));
 }
 
 /** Share of total income held by the top `frac` of earners. */

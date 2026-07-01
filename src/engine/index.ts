@@ -41,4 +41,5 @@ export {
   type DynamicsParams,
   type DynamicsResult,
   type YearMetrics,
+  type YearBand,
 } from "./dynamics.js";
