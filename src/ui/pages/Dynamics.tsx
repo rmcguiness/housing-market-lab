@@ -27,25 +27,41 @@ export function Dynamics() {
       <DynamicsControls dyn={dyn} />
       <div className="content">
         <div className="callout">
-          <strong>Over {last.year + 1} years.</strong> The private rental stock{" "}
-          {stockChange >= 0 ? "grew" : "shrank"} {pct(Math.abs(stockChange), 0)} (
-          {num(first.landlordCount)} → {num(last.landlordCount)} units) and the
-          population {popChange >= 0 ? "grew" : "shrank"} {pct(Math.abs(popChange), 0)}{" "}
+          <span className="callout-lead">Over {last.year + 1} years</span>
+          The private rental stock{" "}
+          <span className={stockChange >= 0 ? "hl-good" : "hl-bad"}>
+            {stockChange >= 0 ? "grew" : "shrank"} {pct(Math.abs(stockChange), 0)}
+          </span>{" "}
+          ({num(first.landlordCount)} → {num(last.landlordCount)} units) and the population{" "}
+          <span className={popChange >= 0 ? "hl-good" : "hl-bad"}>
+            {popChange >= 0 ? "grew" : "shrank"} {pct(Math.abs(popChange), 0)}
+          </span>{" "}
           ({num(first.population)} → {num(last.population)} households
           {popChange < 0 ? ", as residents left" : ""}). Government revenue{" "}
-          {revChange >= 0 ? "rose" : "fell"} {pct(Math.abs(revChange), 0)}, and the
-          housed rate {housedChange >= 0 ? "rose" : "fell"}{" "}
-          {pct(Math.abs(housedChange), 0)} to {pct(last.housedRate, 0)}
+          <span className={revChange >= 0 ? "hl-good" : "hl-bad"}>
+            {revChange >= 0 ? "rose" : "fell"} {pct(Math.abs(revChange), 0)}
+          </span>
+          , and the housed rate{" "}
+          <span className={housedChange >= 0 ? "hl-good" : "hl-bad"}>
+            {housedChange >= 0 ? "rose" : "fell"} {pct(Math.abs(housedChange), 0)}
+          </span>{" "}
+          to {pct(last.housedRate, 0)}
           {housedChange > 0 && popChange < 0 ? " (of a shrunken city)" : ""}.{" "}
-          {crisisYear
-            ? `Voucher coverage first fell short in year ${crisisYear.year}, reaching ${pct(
-                last.voucherCoverage,
-                0
-              )} by the end — the funding gap the tax base could no longer close.`
-            : "Assistance stayed fully funded throughout."}{" "}
+          {crisisYear ? (
+            <span className="hl-bad">
+              Voucher coverage first fell short in year {crisisYear.year}, reaching{" "}
+              {pct(last.voucherCoverage, 0)} by the end — the funding gap the tax base could no
+              longer close.
+            </span>
+          ) : (
+            <span className="hl-good">Assistance stayed fully funded throughout.</span>
+          )}{" "}
           By the end, {num(last.ownerOccupied)} units had converted to owner-occupied,{" "}
-          {num(last.warehoused)} were warehoused vacant, and {num(last.abandoned)} were
-          abandoned.
+          {num(last.warehoused)} were warehoused vacant, and{" "}
+          <span className={last.abandoned > 0 ? "hl-bad" : undefined}>
+            {num(last.abandoned)} were abandoned
+          </span>
+          .
         </div>
 
         <div className="panel-grid">

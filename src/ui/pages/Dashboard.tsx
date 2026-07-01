@@ -14,35 +14,40 @@ import { ComparisonTable } from "../components/ComparisonTable.js";
 const REGIME_NOTE: Record<string, ReactNode> = {
   freeMarket: (
     <>
-      <strong>Free market.</strong> Rents clear supply and demand with no
-      intervention. This is the efficient benchmark — note how the lowest income
-      quintile is still largely priced out, the core failure that motivates every
-      policy below.
+      <span className="callout-lead">Free market</span>
+      Rents clear supply and demand with no intervention — the{" "}
+      <span className="hl-accent">efficient benchmark</span>. Note how the lowest income
+      quintile is <span className="hl-bad">still largely priced out</span>: the core failure
+      that motivates every policy below.
     </>
   ),
   rentCeiling: (
     <>
-      <strong>Rent ceiling.</strong> A hard cap on rent. Watch two textbook
-      forces: landlords whose costs exceed the cap <em>withdraw</em> their units
-      (supply falls), and the suppressed price draws excess demand that must be
-      rationed. A lucky few win cheap units; more households are priced out.
+      <span className="callout-lead">Rent ceiling</span>
+      A hard cap on rent. Watch two textbook forces: landlords whose costs exceed the cap{" "}
+      <span className="hl-bad">withdraw their units</span> (supply falls), and the suppressed
+      price draws excess demand that must be rationed. A{" "}
+      <span className="hl-good">lucky few win cheap units</span>; more households are{" "}
+      <span className="hl-bad">priced out</span>.
     </>
   ),
   rentFreeze: (
     <>
-      <strong>Rent freeze.</strong> Rents are pinned at today's level while demand
-      grows (incomes rise). Rents can't follow, so a shortage opens up and surplus
-      shifts from landlords to whoever already holds a unit.
+      <span className="callout-lead">Rent freeze</span>
+      Rents are pinned at today's level while demand grows (incomes rise). Rents can't follow,
+      so a <span className="hl-bad">shortage opens up</span> and surplus shifts from landlords
+      to <span className="hl-good">whoever already holds a unit</span>.
     </>
   ),
   governmentAssistance: (
     <>
-      <strong>Government assistance.</strong> Demand-side <em>vouchers</em> lift
-      low-income tenants' budgets so they can compete; supply-side{" "}
-      <em>public housing</em> rents below cost to the poorest. Both pull the bottom
-      quintile into housing — at a government cost. See how much of the gain is
-      captured by landlords as higher rents (the voucher-incidence question), and
-      visit <strong>Over time</strong> to see whether the tax base can keep funding it.
+      <span className="callout-lead">Government assistance</span>
+      Demand-side <span className="hl-accent">vouchers</span> lift low-income tenants' budgets
+      so they can compete; supply-side <span className="hl-accent">public housing</span> rents
+      below cost to the poorest. Both <span className="hl-good">pull the bottom quintile into
+      housing</span> — at a <span className="hl-warn">government cost</span>. Watch how much of
+      the gain landlords capture as higher rents (voucher incidence), and visit{" "}
+      <strong>Over time</strong> to see whether the tax base can keep funding it.
     </>
   ),
 };

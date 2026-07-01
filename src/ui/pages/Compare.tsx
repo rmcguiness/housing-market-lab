@@ -49,12 +49,61 @@ export function Compare() {
       <CompareControls cmp={cmp} />
       <div className="content">
         <div className="callout">
-          <strong>The whole plan rides on one thing: does it build?</strong> Below is
-          the same NYC under a low-tax <span style={{ color: FREE }}>free market</span>{" "}
-          and under <span style={{ color: PLAN }}>the plan</span> (rent freeze + higher
-          taxes + public housing + vouchers). Flip the build-out between{" "}
-          <em>delivers</em> and <em>underdelivers</em> and watch the plan's line jump
-          above or below the market.
+          <span className="callout-lead">The whole plan rides on one thing: does it build?</span>
+          The same NYC under a low-tax <span className="hl-accent">free market</span> vs.{" "}
+          <span style={{ color: PLAN, fontWeight: 600 }}>Mamdani's plan</span> (rent freeze +
+          higher taxes + a public build-out + vouchers). Flip the build-out between{" "}
+          <span className="hl-good">delivers</span> and{" "}
+          <span className="hl-bad">underdelivers</span> and watch the plan's line jump above
+          or below the market.
+        </div>
+
+        <div className="panel">
+          <h2>What is “the plan”?</h2>
+          <p className="sub" style={{ marginBottom: 12 }}>
+            A stylized version of Mayor Zohran Mamdani's housing platform. Reasonable people
+            disagree about it — this tool lets you <em>test</em> it rather than take a side.
+          </p>
+          <div className="plan-pillars">
+            <div>
+              <strong>1. Freeze the rent.</strong> Halt increases on NYC's ~1&nbsp;million
+              rent-stabilized apartments to stop displacement of current tenants.
+            </div>
+            <div>
+              <strong>2. Build ~200,000 homes.</strong> A decade-long public build-out of
+              permanently affordable, rent-stabilized units — the supply side of the plan.
+            </div>
+            <div>
+              <strong>3. Tax the top to pay for it.</strong> Higher taxes on corporations and
+              the highest earners (plus city bonds) fund construction and assistance.
+            </div>
+            <div>
+              <strong>4. Expand assistance.</strong> Vouchers and public units to house
+              low-income New Yorkers directly.
+            </div>
+          </div>
+          <p style={{ marginTop: 14 }}>
+            <span className="hl-accent">The goal:</span> make the city affordable for working-
+            and low-income residents and stop rent-driven displacement.{" "}
+            <span className="hl-accent">The intended outcome:</span> rents stop rising for
+            stabilized tenants while a wave of new affordable supply houses more people — paid
+            for by those “who can afford it.”
+          </p>
+          <div className="callout" style={{ borderLeftColor: PLAN, marginTop: 6 }}>
+            <span className="hl-warn">What this tool stress-tests:</span> the freeze and taxes
+            reliably <span className="hl-bad">shrink private rental supply</span> (the
+            rent-control evidence), and public housing adds a{" "}
+            <span className="hl-bad">maintenance liability</span> (see NYCHA's repair backlog).
+            The plan only comes out ahead if the{" "}
+            <span className="hl-good">200k-unit build-out actually delivers</span> — so the
+            whole result turns on <strong>execution</strong>, not on the freeze itself.
+          </div>
+          <p style={{ fontSize: 12, color: "var(--text-faint)", marginTop: 10, marginBottom: 0 }}>
+            Model simplifications: the freeze here applies to the whole rental market (real
+            freezes hit only stabilized units), and “higher taxes” are represented via property
+            + income tax rather than his specific corporate / millionaire surcharges. The
+            directions hold; treat magnitudes as scenarios, not forecasts.
+          </p>
         </div>
 
         <div className="metrics-row">
@@ -124,12 +173,14 @@ export function Compare() {
         </div>
 
         <div className="callout" style={{ borderLeftColor: PLAN }}>
-          <strong>Reading it honestly:</strong> the free market grows the stock but
-          leaves the poorest priced out — that's the problem the plan exists to solve.
-          The plan can house more people, but only if the build-out delivers. Set it to{" "}
-          <em>underdelivers</em> — historically the norm — and you get the squeeze
-          (freeze + tax shrink supply) without the offsetting construction. The lever
-          that decides it isn't the freeze; it's whether you build.
+          <span className="callout-lead">Reading it honestly</span>
+          The <span className="hl-accent">free market</span> grows the stock but leaves the{" "}
+          <span className="hl-bad">poorest priced out</span> — that's the problem the plan
+          exists to solve. The plan can <span className="hl-good">house more people</span>, but
+          only if the build-out delivers. Set it to{" "}
+          <span className="hl-bad">underdelivers</span> — historically the norm — and you get
+          the squeeze (freeze + tax shrink supply) with nothing to replace it. The lever that
+          decides it isn't the freeze; it's <strong>whether you build</strong>.
         </div>
       </div>
     </div>
@@ -198,6 +249,7 @@ function CompareControls({ cmp }: { cmp: CompareState }) {
         </p>
         <Slider
           label="Landlord-flight sensitivity"
+          info={"How readily loss-making landlords exit each year. Higher = faster loss of rental supply under stress. Empirically uncertain."}
           value={c.flightSensitivity}
           min={0}
           max={0.6}
@@ -207,6 +259,7 @@ function CompareControls({ cmp }: { cmp: CompareState }) {
         />
         <Slider
           label="Wealthy-emigration sensitivity"
+          info={"How readily high earners leave as taxes rise, eroding the tax base. Real-world tax-driven migration is generally small."}
           value={c.emigrationSensitivity}
           min={0}
           max={3}
@@ -216,6 +269,7 @@ function CompareControls({ cmp }: { cmp: CompareState }) {
         />
         <Slider
           label="Time horizon"
+          info={"How many years the simulation runs forward."}
           value={c.years}
           min={5}
           max={40}

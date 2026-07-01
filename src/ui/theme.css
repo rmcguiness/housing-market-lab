@@ -330,6 +330,108 @@ table.compare thead th {
   color: var(--text);
 }
 
+/* coloured emphasis inside callouts / prose */
+.hl-good {
+  color: var(--good);
+  font-weight: 600;
+}
+.hl-bad {
+  color: var(--bad);
+  font-weight: 600;
+}
+.hl-warn {
+  color: var(--warn);
+  font-weight: 600;
+}
+.hl-accent {
+  color: var(--accent);
+  font-weight: 600;
+}
+.callout-lead {
+  display: block;
+  font-size: 13.5px;
+  color: var(--text);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+/* Mamdani-plan pillars on the Compare page */
+.plan-pillars {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 6px;
+}
+.plan-pillars > div {
+  background: var(--bg-elev2);
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  color: var(--text-dim);
+}
+.plan-pillars strong {
+  color: var(--text);
+}
+@media (max-width: 760px) {
+  .plan-pillars {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- slider info tooltips ---- */
+.info-wrap {
+  position: relative;
+  display: inline-block;
+}
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  margin-left: 5px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--bg-elev2);
+  color: var(--text-faint);
+  font-size: 9px;
+  font-style: italic;
+  font-weight: 700;
+  cursor: help;
+  padding: 0;
+  line-height: 1;
+  vertical-align: middle;
+}
+.info-icon:hover,
+.info-icon:focus {
+  color: var(--accent);
+  border-color: var(--accent);
+  outline: none;
+}
+.info-tip {
+  display: none;
+  position: absolute;
+  top: 20px;
+  left: -4px;
+  width: 240px;
+  max-width: 62vw;
+  z-index: 8;
+  background: var(--bg-elev2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 11px;
+  font-size: 11.5px;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--text-dim);
+  box-shadow: var(--shadow);
+}
+.info-wrap:hover .info-tip,
+.info-icon:focus + .info-tip {
+  display: block;
+}
+
 /* ---- recharts tooltip override ---- */
 .recharts-default-tooltip {
   background: var(--bg-elev2) !important;

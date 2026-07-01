@@ -38,6 +38,7 @@ export function ControlPanel({ model }: { model: ModelState }) {
           <h3>Ceiling settings</h3>
           <Slider
             label="Rent ceiling"
+            info={"The maximum monthly rent any unit may legally charge. Set below the market rate it caps rents for the lucky, but pushes thin-margin landlords to withdraw units."}
             value={c.ceiling}
             min={500}
             max={5000}
@@ -54,6 +55,7 @@ export function ControlPanel({ model }: { model: ModelState }) {
           <h3>Freeze settings</h3>
           <Slider
             label="Demand shock (income growth)"
+            info={"How much household incomes rise after rents are frozen. Models demand growing while frozen rents can't follow — the source of the resulting shortage."}
             value={c.incomeGrowth}
             min={0}
             max={0.6}
@@ -70,6 +72,7 @@ export function ControlPanel({ model }: { model: ModelState }) {
           <h3>Assistance settings</h3>
           <Slider
             label="Voucher amount"
+            info={"Monthly subsidy added to an eligible low-income household's housing budget so it can compete for units. Part of it can be captured by landlords as higher rent."}
             value={c.voucherCap}
             min={0}
             max={2000}
@@ -79,6 +82,7 @@ export function ControlPanel({ model }: { model: ModelState }) {
           />
           <Slider
             label="Voucher income cutoff"
+            info={"Households earning below this qualify for vouchers and public housing."}
             value={c.voucherIncomeThreshold}
             min={20000}
             max={100000}
@@ -88,6 +92,7 @@ export function ControlPanel({ model }: { model: ModelState }) {
           />
           <Slider
             label="Public-housing share"
+            info={"Fraction of the housing stock the government operates and rents below cost to the lowest-income households."}
             value={c.publicHousingShare}
             min={0}
             max={0.4}
@@ -97,6 +102,7 @@ export function ControlPanel({ model }: { model: ModelState }) {
           />
           <Slider
             label="Public rent discount"
+            info={"How far below carrying cost public units are rented. Higher = cheaper for tenants, but a larger ongoing subsidy for the government."}
             value={c.publicRentDiscount}
             min={0}
             max={0.9}
@@ -111,6 +117,7 @@ export function ControlPanel({ model }: { model: ModelState }) {
         <h3>Households (demand)</h3>
         <Slider
           label="Median income"
+          info={"The midpoint of the income distribution — half of households earn more, half less. NYC ≈ $76k."}
           value={c.medianIncome}
           min={30000}
           max={150000}
@@ -120,6 +127,7 @@ export function ControlPanel({ model }: { model: ModelState }) {
         />
         <Slider
           label="Income inequality (σ)"
+          info={"Spread of the log-normal income distribution. Higher σ = a fatter tail of high earners and more inequality (a higher Gini)."}
           value={c.incomeSigma}
           min={0.3}
           max={1.3}
@@ -129,6 +137,7 @@ export function ControlPanel({ model }: { model: ModelState }) {
         />
         <Slider
           label="Avg housing budget share"
+          info={"Average share of income households are willing to spend on housing — the '30% of income' rule of thumb."}
           value={c.budgetShareMean}
           min={0.2}
           max={0.5}
@@ -138,6 +147,7 @@ export function ControlPanel({ model }: { model: ModelState }) {
         />
         <Slider
           label="Number of households"
+          info={"How many households compete for housing (the demand side)."}
           value={c.households}
           min={1000}
           max={8000}
@@ -151,6 +161,7 @@ export function ControlPanel({ model }: { model: ModelState }) {
         <h3>Housing stock (supply)</h3>
         <Slider
           label="Number of units"
+          info={"Total housing units in the market (the supply side). Fewer units than households creates a structural shortage."}
           value={c.units}
           min={1000}
           max={8000}
@@ -160,6 +171,7 @@ export function ControlPanel({ model }: { model: ModelState }) {
         />
         <Slider
           label="Cheapest unit cost"
+          info={"The landlord's monthly carrying cost (mortgage + upkeep) for the lowest-quality units — the rent floor below which they won't rent."}
           value={c.minCost}
           min={300}
           max={2000}
@@ -169,6 +181,7 @@ export function ControlPanel({ model }: { model: ModelState }) {
         />
         <Slider
           label="Priciest unit cost"
+          info={"The landlord's monthly carrying cost for the highest-quality units."}
           value={c.maxCost}
           min={2500}
           max={9000}
@@ -182,6 +195,7 @@ export function ControlPanel({ model }: { model: ModelState }) {
         <h3>Market structure</h3>
         <Slider
           label="Landlord market power (θ)"
+          info={"How each rental's surplus splits between tenant and landlord. θ→1: rents near the tenant's full willingness to pay; θ→0: rents near cost. It changes who captures value, NOT who gets housed."}
           value={c.landlordPower}
           min={0}
           max={1}
@@ -191,6 +205,7 @@ export function ControlPanel({ model }: { model: ModelState }) {
         />
         <Slider
           label="Property-tax rate"
+          info={"Annual tax as a share of a unit's assessed value, added to the landlord's carrying cost. Higher rates push marginal landlords out of the market."}
           value={c.propertyTaxRate}
           min={0}
           max={0.05}
@@ -200,6 +215,7 @@ export function ControlPanel({ model }: { model: ModelState }) {
         />
         <Slider
           label="Random seed"
+          info={"Selects which random draw of households and units is generated. The same seed always reproduces the same result."}
           value={c.seed}
           min={1}
           max={50}
