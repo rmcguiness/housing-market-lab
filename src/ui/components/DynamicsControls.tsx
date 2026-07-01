@@ -1,11 +1,12 @@
 import type { DynState } from "../useDynamics.js";
 import { Slider } from "./Slider.js";
+import { Sidebar } from "./Sidebar.js";
 import { usd, pct } from "../format.js";
 
 export function DynamicsControls({ dyn }: { dyn: DynState }) {
   const { controls: c, set, reset } = dyn;
   return (
-    <aside className="sidebar">
+    <Sidebar>
       <div className="control-group">
         <h3>Rent regime</h3>
         <div className="seg">
@@ -163,6 +164,6 @@ export function DynamicsControls({ dyn }: { dyn: DynState }) {
       <button className="btn-reset" onClick={reset}>
         ↺ Reset dynamics
       </button>
-    </aside>
+    </Sidebar>
   );
 }

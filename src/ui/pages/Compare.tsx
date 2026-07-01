@@ -11,6 +11,7 @@ import {
 } from "recharts";
 import { useCompare, type CompareState } from "../useCompare.js";
 import { Slider } from "../components/Slider.js";
+import { Sidebar } from "../components/Sidebar.js";
 import { COLORS, num, pct, usdCompact } from "../format.js";
 
 const FREE = COLORS.supply; // blue
@@ -167,7 +168,7 @@ function ScenarioCard({
 function CompareControls({ cmp }: { cmp: CompareState }) {
   const { controls: c, set, reset } = cmp;
   return (
-    <aside className="sidebar">
+    <Sidebar>
       <div className="control-group">
         <h3>The decisive lever</h3>
         <div className="seg">
@@ -227,6 +228,6 @@ function CompareControls({ cmp }: { cmp: CompareState }) {
       <button className="btn-reset" onClick={reset}>
         ↺ Reset comparison
       </button>
-    </aside>
+    </Sidebar>
   );
 }

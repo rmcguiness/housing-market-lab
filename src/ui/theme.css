@@ -414,3 +414,134 @@ table.compare thead th {
 .katex {
   color: var(--text);
 }
+
+/* ---- mobile ---- */
+/* The controls drawer toggle is desktop-hidden; it becomes a floating button
+   on small screens (see the media query below). */
+.sidebar-toggle {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  /* header: compact, non-sticky, scrollable nav */
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 14px;
+    position: static;
+  }
+  .brand p {
+    display: none;
+  }
+  .brand h1 {
+    font-size: 15px;
+  }
+  .brand-mark {
+    font-size: 20px;
+  }
+  .app-nav {
+    width: 100%;
+    overflow-x: auto;
+    gap: 2px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .app-nav a {
+    padding: 6px 10px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  /* layout: single column, charts are the default view */
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+  .content {
+    padding: 16px 13px 92px;
+  }
+
+  /* controls become a slide-up full-screen drawer */
+  .sidebar {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-right: none;
+    padding: 18px 16px 96px;
+    transform: translateY(100%);
+    transition: transform 0.25s ease;
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
+  }
+  .sidebar.open {
+    transform: translateY(0);
+  }
+  .sidebar-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 41;
+    background: var(--accent);
+    color: #0c1117;
+    border: none;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: var(--sans);
+    padding: 12px 18px;
+    border-radius: 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+  }
+
+  /* tighten cards, panels, tables for narrow screens */
+  .metrics-row {
+    grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .metric-card {
+    padding: 11px 12px;
+  }
+  .metric-card .value {
+    font-size: 20px;
+  }
+  .panel {
+    padding: 13px 13px;
+  }
+  .panel-grid {
+    gap: 13px;
+  }
+  .callout {
+    font-size: 12px;
+    padding: 10px 12px;
+  }
+
+  .docs {
+    padding: 10px 14px 90px;
+  }
+  .docs h1 {
+    font-size: 22px;
+  }
+  .docs h2 {
+    font-size: 17px;
+  }
+  .docs .lede {
+    font-size: 14px;
+  }
+  .katex-block {
+    padding: 10px 10px;
+    font-size: 0.9em;
+  }
+
+  table.compare {
+    font-size: 12px;
+  }
+  table.compare th,
+  table.compare td {
+    padding: 7px 6px;
+  }
+}

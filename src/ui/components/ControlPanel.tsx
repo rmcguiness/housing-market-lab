@@ -1,5 +1,6 @@
 import type { ModelState } from "../useModel.js";
 import { Slider } from "./Slider.js";
+import { Sidebar } from "./Sidebar.js";
 import { usd, pct, num } from "../format.js";
 
 const POLICIES: {
@@ -16,7 +17,7 @@ export function ControlPanel({ model }: { model: ModelState }) {
   const { controls: c, set, reset } = model;
 
   return (
-    <aside className="sidebar">
+    <Sidebar>
       <div className="control-group">
         <h3>Policy regime</h3>
         <div className="seg">
@@ -219,7 +220,7 @@ export function ControlPanel({ model }: { model: ModelState }) {
       <button className="btn-reset" onClick={reset}>
         ↺ Reset to NYC defaults
       </button>
-    </aside>
+    </Sidebar>
   );
 }
 
